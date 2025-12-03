@@ -2,7 +2,8 @@
 #include <math.h>
 
 // ----------------- HÀM UCLN + BCNN ------------------
-int UCLN(int a, int b) {
+int UCLN(int a, int b)
+{
     while (b != 0) {
         int r = a % b;
         a = b;
@@ -62,26 +63,47 @@ int main() {
 
               // 3. Tính tiền Karaoke
         case 3: {
-            float gio;
-            printf("Nhap so gio hat Karaoke: ");
-            scanf("%f", &gio);
+            int start, end;
+            printf("Nhap gio bat dau (12 - 23): ");
+            scanf("%d", &start);
+            printf("Nhap gio ket thuc (12 - 23): ");
+            scanf("%d", &end);
 
+            // Kiểm tra hợp lệ
+            if (start < 12 || start > 23 || end < 12 || end > 23 || end <= start) {
+                printf("Gio khong hop le! Quay hoat dong tu 12h den 23h.\n");
+                break;
+            }
+
+            int gio = end - start;  // số giờ hát
             float tien = 0;
-            if (gio <= 3)
+
+            // Tính tiền theo số giờ
+            if (gio <= 3) {
                 tien = gio * 150000;
-            else
-                tien = 3 * 150000 + (gio - 3) * 120000;
+            }
+            else {
+                // 3 giờ đầu
+                tien = 3 * 150000;
 
-            if (gio >= 5)
-                tien *= 0.9; // giảm 10%
+                // Từ giờ thứ 4 giảm 30%
+                tien += (gio - 3) * (150000 * 0.7);
+            }
 
-            printf("Tien Karaoke = %.0f VND\n", tien);
+            // Giảm thêm 10% nếu giờ bắt đầu từ 14 -> 17
+            if (start >= 14 && start <= 17) {
+                tien *= 0.9;
+            }
+
+            printf("So gio hat: %d\n", gio);
+            printf("Tong tien thanh toan: %.0f VND\n", tien);
             break;
         }
 
               // 4. Tính tiền điện  
               // Bậc thang đơn giản
-        case 4: {
+        case 4:
+        {
             int soDien;
             printf("Nhap so kWh: ");
             scanf("%d", &soDien);
@@ -100,33 +122,59 @@ int main() {
 
               // 5. Chức năng đổi tiền
         case 5: {
-            int money;
-            printf("Nhap so tien can doi: ");
-            scanf("%d", &money);
+            int menhGia[] = { 500, 200, 100, 50, 20, 10, 5, 2, 1 };
+            int soTien, i;
 
-            int menh[] = { 500000, 200000, 100000, 50000, 20000, 10000 };
-            for (int i = 0; i < 6; i++) {
-                printf("%d VND: %d to\n", menh[i], money / menh[i]);
-                money %= menh[i];
+            printf("Nhap so tien can doi: ");
+            scanf("%d", &soTien);
+
+            if (soTien <= 0) {
+                printf("So tien khong hop le!\n");
+                return;
+            }
+
+            printf("Ket qua doi tien:\n");
+
+            for (i = 0; i < 9; i++) 
+            {
+                if (soTien >= menhGia[i]) {
+                    int soTo = soTien / menhGia[i];
+                    soTien %= menhGia[i];
+                    printf("%d to %d\n", soTo, menhGia[i]);
+                }
             }
             break;
         }
 
               // 6. Lãi suất vay trả góp
         case 6: {
-            double goc, rate, months;
-            printf("Nhap so tien vay: ");
-            scanf("%lf", &goc);
-            printf("Nhap lai suat/thang (%%): ");
-            scanf("%lf", &rate);
-            printf("Nhap so thang vay: ");
-            scanf("%lf", &months);
+            double tienVay;
+            printf("Nhap so tien muon vay: ");
+            scanf("%lf", &tienVay);
 
-            double laithang = goc * (rate / 100);
-            double traThang = goc / months + laithang;
+            if (tienVay <= 0) {
+                printf("So tien vay khong hop le!\n");
+                return;
+            }
 
-            printf("Tien tra hang thang: %.0f VND\n", traThang);
-            printf("Tong phai tra: %.0f VND\n", traThang * months);
+            double laiSuat = 0.05;                    // 5% / tháng
+            double gocPhaiTra = tienVay / 12;         // goc tra co dinh moi thang
+            double soTienConLai = tienVay;
+
+            printf("\n%-10s %-15s %-15s %-18s %-15s\n",
+                "Ky han", "Lai phai tra", "Goc phai tra", "So tien phai tra", "Con lai");
+            printf("--------------------------------------------------------------------------\n");
+
+            for (int i = 1; i <= 12; i++) {
+                double laiPhaiTra = soTienConLai * laiSuat;
+                double tongTra = laiPhaiTra + gocPhaiTra;
+                soTienConLai -= gocPhaiTra;
+
+                if (soTienConLai < 0) soTienConLai = 0;
+
+                printf("%-10d %-15.0f %-15.0f %-18.0f %-15.0f\n",
+                    i, laiPhaiTra, gocPhaiTra, tongTra, soTienConLai);
+            }
             break;
         }
 
@@ -207,7 +255,8 @@ int main() {
         }
 
               // 10. Tính toán phân số
-        case 10: {
+        case 10: 
+        {
             int a, b, c, d;
             printf("Nhap phan so a/b: ");
             scanf("%d %d", &a, &b);
