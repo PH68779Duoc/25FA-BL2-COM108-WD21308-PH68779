@@ -1,6 +1,20 @@
 ﻿#include <stdio.h>
 #include <math.h>
 
+// KHAIBAO NGUYEN MAU HAM
+
+void kiemTraSoNguyen();
+void uocSoChungBoiSoChung();
+void tinhTienKaraoke();
+void tinhTienDien();
+void chucNangDoiTien();
+void tinhLaiSuatVayTraGop();
+void vayTienMuaXe();
+void sapXepThongTinSinhVien();
+void gameFpolyLott();
+void tinhToanPhanSo();
+
+
 // ----------------- HÀM UCLN + BCNN ------------------
 int UCLN(int a, int b)
 {
@@ -53,9 +67,10 @@ int main() {
               // 2. Ước chung và bội chung
         case 2: {
             int a, b;
-            printf("Nhap so thu nhat: \n");
-            printf("Nhap so thu hai: \n");
-            scanf("%d %d", &a, &b);
+            printf("Nhap so thu nhat: ");
+            scanf("%d", &a);
+            printf("Nhap so thu hai: ");
+            scanf("%d", &b);
             printf("UCLN = %d\n", UCLN(a, b));
             printf("BCNN = %d\n", BCNN(a, b));
             break;
